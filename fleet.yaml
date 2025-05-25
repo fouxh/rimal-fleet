@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rimal-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rimal-server
+  template:
+    metadata:
+      labels:
+        app: rimal-server
+    spec:
+      containers:
+      - name: rimal
+        image: fouxh/rimal-server:latest
+        ports:
+        - containerPort: 7777
+          protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rimal-server-service
+spec:
+  selector:
+    app: rimal-server
+  ports:
+  - protocol: UDP
+    port: 7777
+    targetPort: 7777
+  type: NodePort
